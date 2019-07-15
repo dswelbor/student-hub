@@ -43,12 +43,11 @@ def get_setting(key, settings=json_settings) :
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = '%tx(bfrw5%$r_!f_606#*x@#&fr6je1@%32wa7*rzr%-b(%)0q'
 SECRET_KEY = get_setting("SECRET_KEY")
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
+
 DEBUG = get_setting("DEBUG")
 
 ALLOWED_HOSTS = []
