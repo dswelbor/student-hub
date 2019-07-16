@@ -62,6 +62,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'users.apps.UsersConfig',  # custom user model
+    # Games
+    'games.trivia.apps.TriviaConfig'
 ]
 
 MIDDLEWARE = [
@@ -153,3 +156,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+AUTH_USER_MODEL = 'users.HubUser'  # Uses custom user model
