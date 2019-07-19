@@ -33,6 +33,8 @@ appropriate. Reach out to fellow contributors as needed for settings.
 
 # Model Database Migrations
 ## Take care committing migrations!
-Migrations should made by the developer updating one model at a time. The developer should then run `python manage.py makemigrations` when committing changes to the repository.<br><br>
+Migrations should made by the developer updating one model at a time. The developer 
+should then run `python manage.py makemigrations <app-name>` when committing changes 
+to the repository.<br><br>
 The following link discusses the issues with conflicts in migrations in vcs.<br>
 https://stackoverflow.com/questions/28035119/should-i-be-adding-the-django-migration-files-in-the-gitignore-file

@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'hub.apps',  # StudentHub home
     'users.apps.UsersConfig',  # custom user model
     # Games
     'games.trivia.apps.TriviaConfig'
@@ -158,3 +159,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'users.HubUser'  # Uses custom user model
+
+LOGIN_REDIRECT_URL = '/'  # Redirects users to the page index on manual login
+
+LOGOUT_REDIRECT_URL = '/'   # Redirects users to the page index on manual logout

@@ -9,6 +9,9 @@ class Difficulty(models.Model):
     # Enumerated
     difficulty = models.CharField(max_length=32, primary_key=True)
 
+    def __str__(self):
+        return self.difficulty
+
 
 class Category(models.Model):
     """
@@ -16,6 +19,9 @@ class Category(models.Model):
     """
     # Enumerated
     category = models.CharField(max_length=64, primary_key=True)
+
+    def __str__(self):
+        return self.category
 
 
 class Question(models.Model):
@@ -28,6 +34,10 @@ class Question(models.Model):
     # Attributes
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     difficulty = models.ForeignKey(Difficulty, on_delete=models.CASCADE)
+
+    def __str__(self):
+        """Returns a String representation of a Question object"""
+        return "{} | {} | {}".format(self.question, self.category, self.difficulty)
 
 
 class MultipleChoice(models.Model):
@@ -43,6 +53,11 @@ class MultipleChoice(models.Model):
     incorrect_c = models.CharField(max_length=64)
     incorrect_d = models.CharField(max_length=64)
 
+    def __str__(self):
+        """Returns a String representation of the MC question"""
+        return "{} ans: {} | incorrect: {}, {}, {}".format(self.question, self.correct_answer, self.incorrect_b,
+                                                           self.incorrect_c, self.incorrect_d)
+
 
 class TrueFalse(models.Model):
     """
@@ -54,8 +69,12 @@ class TrueFalse(models.Model):
     # Attribute
     correct_answer = models.BooleanField()
 
+    def __str__(self):
+        """Returns a String representation of the T/F question"""
+        return "{} ans: {}".format(self.question, self.correct_answer)
 
-class Scores(models.Model):
+
+class Score(models.Model):
     """
     Schema for Trivia game scores
     """
@@ -68,6 +87,12 @@ class Scores(models.Model):
     datetime_start = models.DateTimeField(auto_now_add=True)
     # Entry should be updated when game completes
     datetime_end = models.DateTimeField(blank=True, null=True)
-    questions_correct = models.IntegerField()
-    total_questions = models.IntegerField()
+    questions_correct = models.IntegerField(blank=True, null=True)
+    total_questions = models.IntegerField(blank=True, null=True)
+
+    def __str__(self):
+        """Returns a String Representation of a trivia game score"""
+        return "{} | {} | start: {} end: {} | pts: {} out of: {}".format(self.username, self.difficulty,
+                                                                         self.datetime_start, self.datetime_end,
+                                                                         self.questions_correct, self.total_questions)
 
