@@ -18,7 +18,7 @@ class Category(models.Model):
     Simple schema that outlines categories for Questions.
     """
     # Enumerated
-    category = models.CharField(max_length=64, primary_key=True)
+    category = models.CharField(max_length=140, primary_key=True)
 
     def __str__(self):
         return self.category
@@ -48,15 +48,15 @@ class MultipleChoice(models.Model):
     question = models.OneToOneField(Question, primary_key=True, on_delete=models.CASCADE)
 
     # Attributes
-    correct_answer = models.CharField(max_length=64)
-    incorrect_b = models.CharField(max_length=64)
-    incorrect_c = models.CharField(max_length=64)
-    incorrect_d = models.CharField(max_length=64)
+    correct_answer = models.CharField(max_length=140)
+    incorrect_b = models.CharField(max_length=140)
+    incorrect_c = models.CharField(max_length=140)
+    incorrect_d = models.CharField(max_length=140)
 
     def __str__(self):
         """Returns a String representation of the MC question"""
-        return "{} ans: {} | incorrect: {}, {}, {}".format(self.question, self.correct_answer, self.incorrect_b,
-                                                           self.incorrect_c, self.incorrect_d)
+        return "{} | ans: {} | incorrect: {}, {}, {}".format(self.question, self.correct_answer, self.incorrect_b,
+                                                             self.incorrect_c, self.incorrect_d)
 
 
 class TrueFalse(models.Model):
@@ -95,4 +95,3 @@ class Score(models.Model):
         return "{} | {} | start: {} end: {} | pts: {} out of: {}".format(self.username, self.difficulty,
                                                                          self.datetime_start, self.datetime_end,
                                                                          self.questions_correct, self.total_questions)
-

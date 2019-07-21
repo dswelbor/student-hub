@@ -5,6 +5,12 @@ A student-oriented hub for providing and integrating various academic, social, g
 # Installation
 // TODO: write a build script for use in ubuntu?
 
+## Install PostgreSQL
+//TODO: Include instructions for basic PostgreSQL and provide resources for configuration <br>
+Alternatively, you can use a remote RDMS (ideally PostgreSQL) if one is available to you. 
+Simply update settings.json as appropriate for database access
+
+
 ## Install python (if necessary)
 First, install python 
 `sudo apt-get python3` // TODO: update this command
@@ -38,3 +44,8 @@ should then run `python manage.py makemigrations <app-name>` when committing cha
 to the repository.<br><br>
 The following link discusses the issues with conflicts in migrations in vcs.<br>
 https://stackoverflow.com/questions/28035119/should-i-be-adding-the-django-migration-files-in-the-gitignore-file
+
+# Games
+## Trivia game
+Trivia should be initialized with data using the populate_trivia script. <br>
+`python manage.py populate_trivia`
