@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand
 import http.client
 import json
+from games.trivia.constants import BOOLEAN, MULTIPLE_CHOICE
 from games.trivia.models import Category, Difficulty, Question, MultipleChoice, \
     TrueFalse, Score
 
@@ -54,12 +55,12 @@ def save_questions(question_set):
             new_question.save()  # saves new question in the database
 
             # True False
-            if entry['type'] == 'boolean':
+            if entry['type'] == BOOLEAN:
                 # Add TrueFalse relation
                 TrueFalse.objects.create(question=new_question, correct_answer=entry['correct_answer'])
 
             # Multiple Choice
-            elif entry['type'] == 'multiple':
+            elif entry['type'] == MULTIPLE_CHOICE:
                 # Add MultipleChoice relation
                 # TODO: This assumes a list of at least 3 incorrect answers - implement cleaning/validation for this
                 MultipleChoice.objects.create(question=new_question, correct_answer=entry['correct_answer'],

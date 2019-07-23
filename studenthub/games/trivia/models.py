@@ -1,3 +1,5 @@
+
+from .manage import QuestionManager, MultipleChoiceManager, TrueFalseManager  # , CategoryManager, DifficultyManager
 from django.db import models
 from config.settings import AUTH_USER_MODEL
 
@@ -12,6 +14,8 @@ class Difficulty(models.Model):
     def __str__(self):
         return self.difficulty
 
+    objects = models.Manager()
+
 
 class Category(models.Model):
     """
@@ -23,13 +27,16 @@ class Category(models.Model):
     def __str__(self):
         return self.category
 
+    objects = models.Manager()
+
 
 class Question(models.Model):
     """
     Defines the field values for Trivia questions
     """
-    # Primary key
-    question = models.CharField(max_length=280, primary_key=True)
+    # Primary key is auto-generated id field
+    # Candidate key
+    question = models.CharField(max_length=280, unique=True)
 
     # Attributes
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
@@ -38,6 +45,9 @@ class Question(models.Model):
     def __str__(self):
         """Returns a String representation of a Question object"""
         return "{} | {} | {}".format(self.question, self.category, self.difficulty)
+
+    objects = models.Manager()  # Default django model manager
+    custom = QuestionManager()  # Custom manager
 
 
 class MultipleChoice(models.Model):
@@ -58,6 +68,9 @@ class MultipleChoice(models.Model):
         return "{} | ans: {} | incorrect: {}, {}, {}".format(self.question, self.correct_answer, self.incorrect_b,
                                                              self.incorrect_c, self.incorrect_d)
 
+    objects = models.Manager()  # Default django model manager
+    custom = MultipleChoiceManager()  # Custom manager
+
 
 class TrueFalse(models.Model):
     """
@@ -72,6 +85,9 @@ class TrueFalse(models.Model):
     def __str__(self):
         """Returns a String representation of the T/F question"""
         return "{} ans: {}".format(self.question, self.correct_answer)
+
+    objects = models.Manager()  # Default django model manager
+    custom = TrueFalseManager()  # Custom manager
 
 
 class Score(models.Model):

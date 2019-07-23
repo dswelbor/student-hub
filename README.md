@@ -7,6 +7,9 @@ A student-oriented hub for providing and integrating various academic, social, g
 
 ## Install PostgreSQL
 //TODO: Include instructions for basic PostgreSQL and provide resources for configuration <br>
+ 3) Create username and password for database access.<br>
+ 4) Create the database django will use ie `studenthub` <br>
+ 5) Update settings.json to reflect db settings (more on that later)
 Alternatively, you can use a remote RDMS (ideally PostgreSQL) if one is available to you. 
 Simply update settings.json as appropriate for database access
 
@@ -37,7 +40,11 @@ appropriate. Reach out to fellow contributors as needed for settings.
 
 // TODO: Add more initialization steps
 
-# Model Database Migrations
+## Migrations
+Apply migrations: `python manage.py migrate` <br>
+This applies existing "migrations" from VCS to your database, and defines the schema 
+(types/structure/constraints) for the data in the database
+
 ## Take care committing migrations!
 Migrations should made by the developer updating one model at a time. The developer 
 should then run `python manage.py makemigrations <app-name>` when committing changes 
