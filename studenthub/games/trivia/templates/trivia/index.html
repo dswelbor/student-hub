@@ -6,7 +6,7 @@
 
 {% block content %}
 <h1 align="center">Trivia Game!</h1>
-<form method="post" action="test"> {% csrf_token %}
+<form method="post" action="play"> {% csrf_token %}
     <div id="trivia-options" align="center">
     <select name="qty-questions" size="1" id="qty-select"></select>
     <select name="dif-questions" size="1" id="dif-select"></select>
@@ -16,10 +16,14 @@
     </div>
 </form>
 
+<!-- Table of best games here -->
+<!-- Table of best trivia game players here -->
+
 {% endblock %}
 
 
 {% block script %}
+<script>
 // Trivia schema object
 var triviaSchema = {
     //difficulty: ['easy', 'medium', 'hard'],
@@ -47,12 +51,14 @@ var triviaSchema = {
 /* Use function defined in hub/base.html */
 
 // populate trivia question qty list
-populateElement('qty-select', triviaSchema.qty);
+populateSelectElement('qty-select', triviaSchema.qty);
 
 // Populate difficulty list
-populateElement('dif-select', triviaSchema.difficulty);
+populateSelectElement('dif-select', triviaSchema.difficulty);
 
 // Populate category list
-populateElement('cat-select', triviaSchema.category);
+populateSelectElement('cat-select', triviaSchema.category);
+
+</script>
 
 {% endblock %}

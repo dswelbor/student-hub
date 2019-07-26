@@ -1,5 +1,5 @@
 
-from .manage import QuestionManager, MultipleChoiceManager, TrueFalseManager  # , CategoryManager, DifficultyManager
+from .manage import QuestionManager, MultipleChoiceManager, TrueFalseManager, ScoreManager
 from django.db import models
 from config.settings import AUTH_USER_MODEL
 
@@ -111,3 +111,6 @@ class Score(models.Model):
         return "{} | {} | start: {} end: {} | pts: {} out of: {}".format(self.username, self.difficulty,
                                                                          self.datetime_start, self.datetime_end,
                                                                          self.questions_correct, self.total_questions)
+
+    objects = models.Manager()  # Default django model manager
+    custom = ScoreManager()  # Custom manager

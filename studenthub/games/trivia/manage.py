@@ -1,3 +1,4 @@
+from distutils.util import strtobool
 import random
 # from .models import Category, Difficulty, TrueFalse, MultipleChoice, Score
 from .constants import ANY_CATEGORY
@@ -45,7 +46,9 @@ class QuestionManager(models.Manager):
 
         # Generate random question pk indices
         rng_list = []
-        for i in range(safe_qty):
+        # for i in range(safe_qty):
+        i = 0
+        while i < safe_qty:
             # Generate random number
             rng = random.randrange(1, self.last().id)
 
@@ -56,11 +59,11 @@ class QuestionManager(models.Manager):
                     # Not unique - already present in list
                     while (rng in rng_list) or (str(self.get(pk=rng).difficulty) != difficulty):
                         # rng = random.randrange(qty)
-                        rng = (rng + 1) % count
+                        rng = (rng + 1) % (self.last().id + 1)
                         if rng == 0:
                             rng += 1
                     # Append valid unique index found
-                    rng_list.append(rng)
+                    # rng_list.append(rng)
 
                 # Specific category
                 else:
@@ -72,7 +75,12 @@ class QuestionManager(models.Manager):
                         if rng == 0:
                             rng += 1
                     # Append valid unique index found
-                    rng_list.append(rng)
+                    # rng_list.append(rng)
+
+                # Append valid unique index found
+                rng_list.append(rng)
+                i += 1
+
 
             # Deleted question - does not exist
             except self.model.DoesNotExist:
@@ -80,6 +88,7 @@ class QuestionManager(models.Manager):
                 rng = (rng + 1) % (self.last().id + 1)
                 if rng == 0:
                     rng += 1
+
 
         return rng_list
 
@@ -96,7 +105,7 @@ class TrueFalseManager(models.Manager):
 
     def is_correct(self, question, answer):
         """Returns True if passed answer matches correct answer"""
-        return self.get(question=question).correct_answer == answer
+        return self.get(question=question).correct_answer == strtobool(answer.lower())
 
 
 class MultipleChoiceManager(models.Manager):
@@ -113,5 +122,28 @@ class MultipleChoiceManager(models.Manager):
 
     def is_correct(self, question, answer):
         """Returns True if passed answer matches correct answer"""
-        return self.get(question=question).correct_answer == answer
+        this_mc = self.get(question=question)
+        return this_mc.correct_answer == answer
+
+
+class ScoreManager(models.Manager):
+    """Custom manager to access and modify Scores in db"""
+
+    def start(self, user, difficulty):
+        """Function records the username, difficulty, and start time for new games"""
+        # username = user.get_username()  # parse username from user object
+
+        # Record game start in db
+        new_game = self.create(username=user, difficulty=difficulty)
+        new_game.save()
+
+        # return pk of game
+        return new_game.pk
+
+    # TODO: Implement this function
+    def end(self, pk, correct, total):
+        game_score = self.get(pk=pk)
+        #game_score.__setattr__("datetime_end", datetime)
+        pass
+
 

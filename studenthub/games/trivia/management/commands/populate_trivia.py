@@ -41,6 +41,7 @@ def populate_trivia():
 
 def save_questions(question_set):
     """Saves questions to db model from a question set"""
+    # TODO: Refactor this into a form with input sanitation to mitigate xss code injection
     counter = 0
     for entry in question_set:
         # New Question not present in db

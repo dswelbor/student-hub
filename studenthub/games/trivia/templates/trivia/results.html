@@ -1,0 +1,39 @@
+{% extends 'hub/base.html' %}
+{% load static %}
+
+{% block title %}
+    StudentHub || Trivia
+{% endblock %}
+
+{% block content %}
+<h1 align="center" id="heading1">Trivia Results</h1>
+    <div id="results">
+        <div style="display:inline-block" id="correct-text">Correct: </div>
+        <br>
+        <div style="display:inline-block" id="total-text">Out of: </div>
+    </div>
+
+<br>
+{% endblock %}
+
+{% block script %}
+
+
+
+    <script src="{% static "trivia/results.js" %}"></script>
+    <script>
+        // import data from view context
+        var correctQty = 0; // Initialize value
+        var outOfQty = 0; // Initialize value
+        {% if correct %}
+            correctQty = {{ correct }};
+        {% endif %}
+
+        {% if total %}
+            outOfQty = '{{ total }}';
+        {% endif %}
+
+        addResults(correctQty, outOfQty);
+    </script>
+
+{% endblock %}
