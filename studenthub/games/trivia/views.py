@@ -8,6 +8,7 @@ from .utils import get_question_json, get_questions_json
 from django.contrib.auth.decorators import login_required  # Require users to be logged in to access page
 
 
+@login_required
 def index(request):
     """Simple initial index view for trivia app"""
     difficulty_list = Difficulty.objects.all().order_by('-difficulty')
@@ -96,9 +97,12 @@ def results(request):
             pass
 
     # Get game id for user and record results
+    error_msg = ''  # Initialize as empty string
     try:
         game_pk = request.POST['game-id']
-        # Score.custom.end
+        Score.custom.end(pk=game_pk, correct=correct_qty, total=total_qty)
+
+
     except:
         # User's game was not recorded
         error_msg = "No valid game id - score not recorded"
@@ -107,7 +111,8 @@ def results(request):
     # Map variables for template to use
     context = {
         'total': total_qty,
-        'correct': correct_qty
+        'correct': correct_qty,
+        'error': error_msg
     }
 
     return HttpResponse(template.render(context, request))

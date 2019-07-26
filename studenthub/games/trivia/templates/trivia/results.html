@@ -7,6 +7,11 @@
 
 {% block content %}
 <h1 align="center" id="heading1">Trivia Results</h1>
+
+    {% if error %}
+        <p>{{ error }}</p>
+    {% endif %}
+
     <div id="results">
         <div style="display:inline-block" id="correct-text">Correct: </div>
         <br>

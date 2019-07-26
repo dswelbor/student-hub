@@ -1,5 +1,6 @@
 from distutils.util import strtobool
 import random
+import datetime
 # from .models import Category, Difficulty, TrueFalse, MultipleChoice, Score
 from .constants import ANY_CATEGORY
 from django.db import models
@@ -140,10 +141,14 @@ class ScoreManager(models.Manager):
         # return pk of game
         return new_game.pk
 
-    # TODO: Implement this function
     def end(self, pk, correct, total):
+        """
+        Function records the end results of a trivia game based on end datetime,
+        number of correct questions, and number of total questions
+        """
         game_score = self.get(pk=pk)
-        #game_score.__setattr__("datetime_end", datetime)
-        pass
-
-
+        # Record game datetime end and score
+        game_score.__setattr__("datetime_end", datetime.datetime.now())
+        game_score.__setattr__('questions_correct', correct)
+        game_score.__setattr__('total_questions', total)
+        game_score.save()

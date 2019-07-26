@@ -74,11 +74,12 @@
         var qBlock = document.getElementById(qBlockID); // div for question pool block
         qBlock.append(hiddenQty);
 
+        // TODO: Appropriately validate value gamePK might not have been initialized
         // Add hidden form field to store game pk id
         var hiddenKey = document.createElement("input");
         hiddenKey.setAttribute("type", "hidden");
         hiddenKey.setAttribute("name", GAME_ID);
-        hiddenKey.setAttribute("value", gameKey);
+        hiddenKey.setAttribute("value", gamePK);
         qBlock.append(hiddenKey);
 
 </script>
