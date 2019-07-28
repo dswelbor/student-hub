@@ -25,13 +25,22 @@ https://pip.pypa.io/en/stable/installing/
 https://virtualenv.pypa.io/en/latest/installation/ <br>
 Alternatively you can use virtualenvwrapper for simpler cli commands
 
-## Create virtualenv
-`virtualenv -p python3 env/student-hub` <br>
-Note: env should not be in version control
-
 ## Create project directory and clone repository
 // TODO: update this to reflect mk dir and cd
 // TODO: add git clone command
+
+## Create virtualenv
+`virtualenv -p python3 env/student-hub` <br>
+Note: env should not be in version control, so generally not in same sub directory 
+as the local git repo.
+
+## Activate virtualenv
+`source env/student-hub/bin/activate` <br>
+This activates the virtual environment. To later deactivate virtualenv, type: `deactivate`
+
+## Install environment requirements
+From the virtualenv, navigate to the git repository root folder and run: <br>
+`pip install -r requirements.txt'
 
 ## Settings
 Settings are read from `~/studenthub/config/settings.json` <br>
