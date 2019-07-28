@@ -1,10 +1,10 @@
 from distutils.util import strtobool
 import random
 import datetime
-# from .models import Category, Difficulty, TrueFalse, MultipleChoice, Score
 from .constants import ANY_CATEGORY
 from django.db import models
-from django.db.models import Q
+
+from django.db.models import Q, F, FloatField, ExpressionWrapper
 
 
 class QuestionManager(models.Manager):
@@ -18,7 +18,6 @@ class QuestionManager(models.Manager):
 
         # Generate random indices
         rng_list = self.get_random_indices(qty=qty, difficulty=difficulty, category=category)
-        # rng_list = [2]
 
         rng_query = Q()
 
@@ -63,8 +62,6 @@ class QuestionManager(models.Manager):
                         rng = (rng + 1) % (self.last().id + 1)
                         if rng == 0:
                             rng += 1
-                    # Append valid unique index found
-                    # rng_list.append(rng)
 
                 # Specific category
                 else:
@@ -75,13 +72,10 @@ class QuestionManager(models.Manager):
                         rng = (rng + 1) % (self.last().id + 1)
                         if rng == 0:
                             rng += 1
-                    # Append valid unique index found
-                    # rng_list.append(rng)
 
                 # Append valid unique index found
                 rng_list.append(rng)
                 i += 1
-
 
             # Deleted question - does not exist
             except self.model.DoesNotExist:
@@ -89,7 +83,6 @@ class QuestionManager(models.Manager):
                 rng = (rng + 1) % (self.last().id + 1)
                 if rng == 0:
                     rng += 1
-
 
         return rng_list
 
@@ -152,3 +145,17 @@ class ScoreManager(models.Manager):
         game_score.__setattr__('questions_correct', correct)
         game_score.__setattr__('total_questions', total)
         game_score.save()
+        return game_score
+
+    def get_best_games(self, qty):
+        """
+        Aggregates the weighted score and orders the results in descending order.
+        Returns a QuerySet of the first ordered elements of length(qty). Aggregated
+        weighted score attribute can be accessed as 'weighted_score'
+        """
+        best_games = self.all().exclude(datetime_end=None).annotate(
+            weighted_score=ExpressionWrapper(F('questions_correct') * F('difficulty__weight') * 10,
+                                             output_field=FloatField())).annotate(
+            elapsed=F('datetime_end') - F('datetime_start')
+        ).order_by('-weighted_score', 'elapsed')
+        return best_games[:qty]

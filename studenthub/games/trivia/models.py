@@ -1,4 +1,3 @@
-
 from .manage import QuestionManager, MultipleChoiceManager, TrueFalseManager, ScoreManager
 from django.db import models
 from config.settings import AUTH_USER_MODEL
@@ -10,6 +9,8 @@ class Difficulty(models.Model):
     """
     # Enumerated
     difficulty = models.CharField(max_length=32, primary_key=True)
+    # Weight difficulty - default weight of scalar = 1 (no effect)
+    weight = models.DecimalField(max_digits=2, decimal_places=1, default=1.0)
 
     def __str__(self):
         return self.difficulty
@@ -111,6 +112,9 @@ class Score(models.Model):
         return "{} | {} | start: {} end: {} | pts: {} out of: {}".format(self.username, self.difficulty,
                                                                          self.datetime_start, self.datetime_end,
                                                                          self.questions_correct, self.total_questions)
+
+    def get_weighted_score(self):
+        return self.difficulty.weight * self.questions_correct * 10
 
     objects = models.Manager()  # Default django model manager
     custom = ScoreManager()  # Custom manager

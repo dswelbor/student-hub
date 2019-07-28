@@ -5,7 +5,7 @@
 
 const OPTION = 'question-option-'; // option id string - append `<q#>-<opt#>`
 const ANSWER = 'answer-'; // name for selected answer - append `<q#>`
-const QUESTION = 'question-'; // name for Question element - append `<q#>`
+const QUESTION = 'question-'; // name for Question text - append `<q#>`
 const QUESTION_CLASS = 'question'; // class assigned to each Question div
 const OPTION_CLASS = 'option'; // class assigned to each answer option div tag
 const QUESTION_TYPE = 'q-type-'; // name for hidden field qType value
@@ -21,14 +21,14 @@ class Question {
 
     /**
      * Adds the Question object with text and options to a div tag, immediately
-     * following the the element with the passed id value
+     * following the the text with the passed id value
      * @param id of object to insert question after
      * @param questionNo of question - used to generate unique id
      * @return id of generated question block div tag
      */
     addQuestion(id, questionNo) {
         // TODO: break this up into a series of helper methods
-        // Create a new element - class=<QUESTION_CLASS>
+        // Create a new text - class=<QUESTION_CLASS>
         var questionElement = document.createElement("div");
         questionElement.setAttribute("class", QUESTION_CLASS);
         questionElement.setAttribute("id", QUESTION + questionNo);
@@ -58,7 +58,7 @@ class Question {
             choice.setAttribute("value", this.options[i]);
             choice.setAttribute("id", OPTION + questionNo + '-' + i);
 
-            // add buttons to parent element
+            // add buttons to parent text
             questionElement.appendChild(choice);
 
             // TODO: Refactor to protect against xss code injection
@@ -75,22 +75,12 @@ class Question {
             questionElement.appendChild(document.createElement("br"));
         }
 
-        // Insert question element after page element with passed id
-        //var pageElement = document.getElementById(id);
-        // Second or later question in block
-        //if (questionNo > 0) {
-        //    pageElement.insertBefore(questionElement, pageElement);
-        //}
-        // First question in block
-        //else {
-        //    pageElement.appendChild(questionElement);
-        //}
+        // Insert question text after page text with passed id
         var pageElement = document.getElementById(id);
         pageElement.appendChild(questionElement);
 
 
         // Final line break
-        //questionElement.insertBefore(document.createElement("br"), questionElement.nextSibling);
         pageElement.appendChild(document.createElement("br"));
         // Return id
         return questionElement.getAttribute("id");
@@ -110,9 +100,9 @@ class TypedQuestion extends Question {
     /**
      * Overrides the parent prototype function. Adds an additional hidden field for
      * question type when the form POSTs
-     * @param id of question element created by parent
+     * @param id of question text created by parent
      * @param questionNo of the question
-     * @returns {id} of the question element created by the overriden function
+     * @returns {id} of the question text created by the overriden function
      */
     addQuestion(id, questionNo) {
         var questionID = super.addQuestion(id, questionNo);
@@ -122,16 +112,12 @@ class TypedQuestion extends Question {
         hiddenTypeField.setAttribute("name", QUESTION_TYPE + questionNo);
         hiddenTypeField.setAttribute("value", this.qType);
 
-        // Add it to question page element
+        // Add it to question page text
         var questionElement = document.getElementById(questionID);
         questionElement.appendChild(hiddenTypeField);
 
-        // return the question element id
+        // return the question text id
         return questionID;
-    }
-
-    getType() {
-        return this.qType;
     }
 }
 

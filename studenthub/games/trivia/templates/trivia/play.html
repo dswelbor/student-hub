@@ -7,14 +7,18 @@
 
 
 {% block content %}
-<h1 align="center" id="heading1">Play Trivia!</h1>
-<form method="post" action="results" > {% csrf_token %}
-    <div id="question-block" style="width:30%">
+    <h1 align="center" id="heading1">Play Trivia!</h1>
+    <form method="post" action="results" > {% csrf_token %}
+        <div id="question-block" style="width:30%">
 
-    </div>
-    <input type="submit" value="Final Answer!" id="submit-button">
-</form>
-<hr>
+        </div>
+        {% if error %}
+            <p>{{ error }}</p>
+        {% else %}
+            <input type="submit" value="Final Answer!" id="submit-button">
+        {% endif %}
+    </form>
+    <hr>
 
 {% endblock %}
 

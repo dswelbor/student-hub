@@ -16,48 +16,75 @@
     </div>
 </form>
 
+<br><br><br>
+
 <!-- Table of best games here -->
+<table id="leaderboard" style="border-collapse: collapse">
+    <caption>Top 10 Scores</caption>
+</table>
+
 <!-- Table of best trivia game players here -->
 
+<br><br><br>
+
+<p style="text-align: justify">The data provided in trivia app is available under
+    the Creative Commons Attribution-ShareAlike 4.0 International License. Data was
+    sourced from
+    <a href="https://opentdb.com/api_config.php">https://opentdb.com/api_config.php</a>
+</P>
+
+<a href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons License 4.0</a>
 {% endblock %}
 
 
 {% block script %}
 <script>
-// Trivia schema object
-var triviaSchema = {
-    //difficulty: ['easy', 'medium', 'hard'],
-    //category: ['testa', 'testb', 'testc'],
-    difficulty: [],
-    category: ['{{ ANY_CATEGORY }}'], // Prepend list with ANY_CATEGORY option
-    qty: [10, 20, 30]
-};
+    // Trivia schema object
+    var triviaSchema = {
+        //difficulty: ['easy', 'medium', 'hard'],
+        //category: ['testa', 'testb', 'testc'],
+        difficulty: [],
+        category: ['{{ ANY_CATEGORY }}'], // Prepend list with ANY_CATEGORY option
+        qty: [10, 20, 30]
+    };
 
 
-// Iteratively populate difficulties
-{% if dif_list %}
-    {% for dif in dif_list %}
-        triviaSchema.difficulty.push('{{ dif }}');
-    {% endfor %}
-{% endif %}
+    // Iteratively populate difficulties
+    {% if dif_list %}
+        {% for dif in dif_list %}
+            triviaSchema.difficulty.push('{{ dif }}');
+        {% endfor %}
+    {% endif %}
 
-// Iteratively populate categories
-{% if cat_list %}
-    {% for cat in cat_list %}
-        triviaSchema.category.push('{{ cat }}');
-    {% endfor %}
-{% endif %}
+    // Iteratively populate categories
+    {% if cat_list %}
+        {% for cat in cat_list %}
+            triviaSchema.category.push('{{ cat }}');
+        {% endfor %}
+    {% endif %}
 
-/* Use function defined in hub/base.html */
+    /* Use function defined in hub/base.html */
 
-// populate trivia question qty list
-populateSelectElement('qty-select', triviaSchema.qty);
+    // populate trivia question qty list
+    populateSelectElement('qty-select', triviaSchema.qty);
 
-// Populate difficulty list
-populateSelectElement('dif-select', triviaSchema.difficulty);
+    // Populate difficulty list
+    populateSelectElement('dif-select', triviaSchema.difficulty);
 
-// Populate category list
-populateSelectElement('cat-select', triviaSchema.category);
+    // Populate category list
+    populateSelectElement('cat-select', triviaSchema.category);
+
+    // Get Leaderboard
+    var topGames = []; // Declare a list of game json objects
+    // var parsedQuestions = []; // list of parsed objects containing questions
+    {% if leaderboard %}
+        {% for game in leaderboard %}
+            // Translate json string into a json object and add to list
+            topGames.push(JSON.parse('{{ game|safe }}'));
+        {% endfor %}
+
+    {% endif %}
+    addLeaderboard(topGames, 'leaderboard');
 
 </script>
 

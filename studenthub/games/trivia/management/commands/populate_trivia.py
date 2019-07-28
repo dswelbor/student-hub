@@ -89,7 +89,6 @@ class OpenTriviaConsumer:
     REQ_WITH_TOKEN_SUFFIX = '&token='
 
     # TODO: Implement exception handling for functions and methods in this class
-    # TODO: Implement constants for OpenTriviaAPI attribute keys
 
     def __init__(self):
         """Default ctor instantiates object with a token. result_set is initially empty"""
