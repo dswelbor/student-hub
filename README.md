@@ -40,7 +40,7 @@ This activates the virtual environment. To later deactivate virtualenv, type: `d
 
 ## Install environment requirements
 From the virtualenv, navigate to the git repository root folder and run: <br>
-`pip install -r requirements.txt'
+`pip install -r requirements.txt`
 
 ## Settings
 Settings are read from `~/studenthub/config/settings.json` <br>
