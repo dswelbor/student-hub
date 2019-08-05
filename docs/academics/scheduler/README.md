@@ -24,3 +24,8 @@ Run makefile: <br>
 Executable builds into ~/build/ . For example, to run digraph_test from current directory 
 in cli: <br>
 `build/digraph_test`
+
+## Update .gitignore as needed
+Try to keep the source tree clean of system specific project files/settings and build
+files/artifacts. Some common files types/directories are already added to the project .gitignore
+file. Please update as needed.
