@@ -1,0 +1,91 @@
+{% extends 'hub/base.html' %}
+{% load static %}
+
+{% block title %}
+    StudentHub || Trivia
+{% endblock %}
+
+
+{% block content %}
+    <h1 align="center" id="heading1">Play Trivia!</h1>
+    <form method="post" action="results" > {% csrf_token %}
+        <div id="question-block" style="width:30%">
+
+        </div>
+        {% if error %}
+            <p>{{ error }}</p>
+        {% else %}
+            <input type="submit" value="Final Answer!" id="submit-button">
+        {% endif %}
+    </form>
+    <hr>
+
+{% endblock %}
+
+{% block script %}
+
+
+
+    <script src="{% static "trivia/play.js" %}"></script>
+    <script>
+        const QUESTION_QTY = 'qty'; // name for hidden field with question count qty
+        const GAME_ID = 'game-id'; // name for hidden field with game id value
+        // import data from view context
+        {% if qty %}
+            var questionQty = {{ qty }};
+        {% endif %}
+
+        {% if difficulty %}
+            var difficulty = '{{ difficulty }}';
+        {% endif %}
+
+        {% if category %}
+            var category = '{{ category }}';
+        {% endif %}
+            var gamePK = {{ game_pk }};
+        {% if game_pk %}
+
+        {% endif %}
+        var questionList = []; // declare list of questions
+        var parsedQuestions = []; // list of parsed objects containing questions
+        {% if questions_json %}
+            {% for q_json in questions_json %}
+                // Import json into a TypedQuestion
+                parsedQuestions.push(JSON.parse('{{ q_json|safe }}'));
+            {% endfor %}
+
+        {% endif %}
+        // Iteratively create list of Questions
+        for (var i = 0; i < parsedQuestions.length; i++) {
+            // TODO: Call/implement a filter to change &quote; and similiar strings to
+            var importedQuestion = new TypedQuestion(parsedQuestions[i].question,
+                parsedQuestions[i].choices, parsedQuestions[i].question_type);
+            // Append TypedQuestion to list
+            questionList.push(importedQuestion);
+        }
+
+        // Add each question to question block
+        var qBlockID = 'question-block';
+        for (i = 0; i < questionList.length; i++) {
+            questionList[i].addQuestion(qBlockID, i);
+        }
+
+        // Add hidden form field to store question quantity
+        var hiddenQty = document.createElement("input");
+        hiddenQty.setAttribute("type", "hidden");
+        hiddenQty.setAttribute("name", QUESTION_QTY);
+        hiddenQty.setAttribute("value", {{ qty }});
+        var qBlock = document.getElementById(qBlockID); // div for question pool block
+        qBlock.append(hiddenQty);
+
+        // TODO: Appropriately validate value gamePK might not have been initialized
+        // Add hidden form field to store game pk id
+        var hiddenKey = document.createElement("input");
+        hiddenKey.setAttribute("type", "hidden");
+        hiddenKey.setAttribute("name", GAME_ID);
+        hiddenKey.setAttribute("value", gamePK);
+        qBlock.append(hiddenKey);
+
+</script>
+
+{% endblock %}

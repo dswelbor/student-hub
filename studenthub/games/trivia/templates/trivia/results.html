@@ -1,0 +1,69 @@
+{% extends 'hub/base.html' %}
+{% load static %}
+
+{% block title %}
+    StudentHub || Trivia
+{% endblock %}
+
+{% block content %}
+<h1 align="center" id="heading1">Trivia Results</h1>
+
+    {% if error %}
+        <p>{{ error }}</p>
+    {% endif %}
+
+    <div id="results">
+        <div style="display:inline-block" id="correct-text">Correct: </div>
+        <br>
+        <div style="display:inline-block" id="total-text">Out of: </div>
+        <br>
+        <div style="display:inline-block" id="score-text">Score: </div>
+    </div>
+
+    <br><br>
+
+    <table id="leaderboard" style="border-collapse: collapse">
+        <caption>Top 20 Scores</caption>
+    </table>
+
+<br>
+{% endblock %}
+
+{% block script %}
+
+
+
+    <script src="{% static "trivia/results.js" %}"></script>
+    <script>
+        // import data from view context
+        // Initialize values as 0
+        var correctQty = 0;
+        var outOfQty = 0;
+        var gameScore = 0;
+
+        {% if correct %}
+            correctQty = {{ correct }};
+        {% endif %}
+
+        {% if total %}
+            outOfQty = '{{ total }}';
+        {% endif %}
+
+        {% if score %}
+            gameScore = {{ score }};
+        {% endif %}
+
+        // Get Leaderboard
+        var topGames = []; // Declare a list of game json objects
+        {% if leaderboard %}
+            {% for game in leaderboard %}
+                // Translate json string into a json object and add to list
+                topGames.push(JSON.parse('{{ game|safe }}'));
+            {% endfor %}
+
+        {% endif %}
+        addLeaderboard(topGames, 'leaderboard');
+        addResults(correctQty, outOfQty, gameScore);
+    </script>
+
+{% endblock %}

@@ -1,0 +1,14 @@
+{
+
+  "SECRET_KEY":  "<django_secret_key",
+  "DEBUG": true,
+
+  "DATABASE_ENGINE": "django.db.backends.postgresql_psycopg2",
+  "DATABASE_NAME": "studenthub",
+  "DATABASE_HOST": "<host_url>",
+  "DATABASE_PORT":  "<host_port>",
+  "USERNAME": "<username",
+  "PASSWORD": "<password>"
+
+
+}

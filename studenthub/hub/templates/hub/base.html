@@ -1,0 +1,48 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% block title %}
+        {% endblock %}
+    </title>
+</head>
+<body>
+
+
+
+    <header><div align="right">
+        {% if user.is_authenticated %}
+            {{ user.get_full_name }}, <a href="{% url 'logout' %}">logout</a>
+        {% else %}
+            <a href="{% url 'login' %}">login</a>
+        {% endif %}
+
+    </div></header>
+    <nav>
+        <div align="center">
+            <a href="{% url 'index' %}">Home</a>
+            <a href="{% url 'trivia' %}">Trivia</a>
+        </div>
+        <hr>
+    </nav>
+    <section>
+        <div align="center">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </section>
+    <aside>
+        <!-- TODO: Populate sidebar with stuff -->
+    </aside>
+
+    <!-- TODO: Refactor this into static/ as a base.js script -->
+    <script src="{% static "hub/base.js" %}"></script>
+
+    {% block script %}
+    {% endblock %}
+
+</body>
+</html>

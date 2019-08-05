@@ -1,0 +1,11 @@
+# IDE Project Files
+# TODO: add folder/file types as needed
+.idea/
+
+# Python compiled byte-code and dlls
+*.pyc
+*.pyo
+*.pyd
+
+# Settings file (sensitive data)
+config/settings.json
