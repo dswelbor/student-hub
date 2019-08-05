@@ -1,11 +1,19 @@
 # IDE Project Files
 # TODO: add folder/file types as needed
 .idea/
+cmake-build-debug/
 
 # Python compiled byte-code and dlls
 *.pyc
 *.pyo
 *.pyd
 
+# C/C++ build files
+*.o
+*.obj
+*.a
+
+# Native (C/C++/etc) build folders
+native/build/
 # Settings file (sensitive data)
 config/settings.json
