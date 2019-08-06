@@ -21,9 +21,9 @@ From commandline, navigate to ~/native/ from repository root: <br>
 `cd studenthub/academics/scheduler/native` <br>
 Run makefile: <br>
 `make` <br>
-Executable builds into ~/build/ . For example, to run digraph_test from current directory 
+Executable builds into ~/build/ . For example, to run test from current directory 
 in cli: <br>
-`build/digraph_test`
+`build/test`
 
 ## Import Native Source in CLion
 Once you have cloned the project to your local repo:
