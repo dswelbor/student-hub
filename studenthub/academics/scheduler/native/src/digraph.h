@@ -24,7 +24,7 @@ private:
     // Allocate for list of "adjacent" vertices
     std::vector<Vertex> adjList;
     // Number of vertices in digraph
-    int size;
+    int count;
 
 public:
     /**
@@ -71,6 +71,12 @@ public:
      * @return indegree value
      */
     int getInDegree(Vertex vertex);
+
+    /**
+     * Gets the number of vertices present in digraph
+     * @return
+     */
+    int size();
 
     /**
      * Destructor to de-allocate memory used by DiGraph object
