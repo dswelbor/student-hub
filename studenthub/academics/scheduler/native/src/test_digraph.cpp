@@ -1,13 +1,16 @@
-/**
+#include "catch/catch.hpp" // Unit testing framework
+#include "digraph.h"
+#include "digraph.cpp"
+#include <string>
+
+ /**
  * Simple test driver for generic (template) digraph library
  *
  * @author David Welborn
  * @version 08.05.2019
  */
-#include "catch/catch.hpp" // Unit testing framework
-#include "digraph.h"
-#include "digraph.cpp"
-#include <string>
+
+
 
 
 /**
@@ -228,7 +231,9 @@ TEST_CASE("TestCase6: getIndegree() returns the correct inDegree value") {
 
 }
 
-
+/**
+ * Verifies size() returns the accurate (and non-negative) vertex count.
+ */
 TEST_CASE("TestCase7: size() returns an accurate size for the graph") {
     // build digraph
     DiGraphOrdered<int> testINT;
@@ -259,28 +264,3 @@ TEST_CASE("TestCase7: size() returns an accurate size for the graph") {
     REQUIRE(testINT.size() == 0);
 
 }
-/*SECTION( "resizing bigger changes size and capacity" ) {
-v.resize( 10 );
-
-REQUIRE( v.size() == 10 );
-REQUIRE( v.capacity() >= 10 );
-}
-SECTION( "resizing smaller changes size but not capacity" ) {
-v.resize( 0 );
-
-REQUIRE( v.size() == 0 );
-REQUIRE( v.capacity() >= 5 );
-}
-SECTION( "reserving bigger changes capacity but not size" ) {
-v.reserve( 10 );
-
-REQUIRE( v.size() == 5 );
-REQUIRE( v.capacity() >= 10 );
-}
-SECTION( "reserving smaller does not change size or capacity" ) {
-v.reserve( 0 );
-
-REQUIRE( v.size() == 5 );
-REQUIRE( v.capacity() >= 5 );
-}
-}*/

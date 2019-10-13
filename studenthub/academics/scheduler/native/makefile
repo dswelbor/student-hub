@@ -1,6 +1,7 @@
 CC=g++
 CFLAGS=-I.
 DEPS = src/digraph.h src/catch/catch.hpp
+# Might have to remove test_digraph.o from makefile to work
 OBJ = src/test.o src/test_digraph.o src/digraph.o
 BUILDDIR = build
 MKDIR = mkdir -p

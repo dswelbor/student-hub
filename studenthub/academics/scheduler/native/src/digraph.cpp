@@ -34,6 +34,7 @@ DiGraphOrdered<Vertex>::DiGraphOrdered() {
  */
 template <typename Vertex>
 void DiGraphOrdered<Vertex>::addEdge(Vertex from, Vertex to) {
+    // TODO: refactor to store as ordered elements
     // "from" vertex not in graph
     if (0 == this->vertices.count(from)) {
         this->addVertex(from);

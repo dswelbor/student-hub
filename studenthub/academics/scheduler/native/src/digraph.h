@@ -83,5 +83,5 @@ public:
      */
     virtual ~DiGraphOrdered();
 };
-//#include "digraph.cpp"
+
 #endif
