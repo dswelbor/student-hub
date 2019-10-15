@@ -30,14 +30,14 @@ class Course(models.Model):
 
 class Module(models.Model):
     """
-    Simple Schema to model established Course Modules for flashcards.
+    Simple Schema to model established Course Modules for flashcards. Any one Module can only reference
+    one Course, but a Course can be referenced by many Modules.
     """
     # TODO: handle module, course composite key unicity in validation
     # Enumerated Course Module
     # Note: not unique as composite keys are not supported by current Django implementation
     module = models.CharField(max_length=64)
     # Referential Course
-    # TODO: revisit multiplicity
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     # Course description
     description = models.CharField(max_length=128, blank=True, null=True)
@@ -57,7 +57,7 @@ class Flashcard(models.Model):
     # Referential Module - gets Course Candidate key from module attributes
     module = models.ForeignKey(Module, on_delete=models.CASCADE)
     # Approval - is approved?
-    approved = models.BooleanField(default=True)
+    approved = models.BooleanField(default=False)
 
     # Course description
     description = models.CharField(max_length=128, blank=True, null=True)
