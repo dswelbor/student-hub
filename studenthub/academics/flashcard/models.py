@@ -1,4 +1,7 @@
 from django.db import models
+from config.settings import AUTH_USER_MODEL
+
+# TODO: revisit the _str implementation for various models
 
 
 class Subject(models.Model):
@@ -59,10 +62,61 @@ class Flashcard(models.Model):
     # Approval - is approved?
     approved = models.BooleanField(default=False)
 
-    # Course description
-    description = models.CharField(max_length=128, blank=True, null=True)
-
-    # TODO: Finish implementing these fields
-
     def __str__(self):
         return self.question
+
+
+class FlashcardTag(models.Model):
+    """
+    Simple Schema to associate tags like "machine learning" "JavaFX" with flashcards
+    """
+    # Referential Flashcard
+    flashcard = models.ManyToManyField(Flashcard)
+    # Tag - ex "JavaFX" or "unit testing"
+    tag = models.CharField(max_length=64, blank=False, null=False)
+
+    def __str__(self):
+        return self.tag
+
+
+class FlashcardStats(models.Model):
+    """
+    Simple Schema to model Flashcards statistics
+    """
+    # User - relates flashcard data to specific user
+    user = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE)
+    # Flashcard - cumulative stats for a given flashcard
+    flashcard = models.ForeignKey(Flashcard, on_delete=models.CASCADE)
+    # TODO: implement remained for fields
+
+
+    def __str__(self):
+        return self.flashcard.question
+
+
+
+class Flashcard(models.Model):
+    """
+    Schema to model user-specific Flashcard-specific stats
+    """
+    # User using Flashcard
+    user = models.ForeignKey(AUTH_USER_MODEL)
+    # Flashcard used by User
+    flashcard = models.ForeignKey(Flashcard, on_delete=models.CASCADE)
+    # Number of correct attempts using flashcard
+    correct = models.PositiveSmallIntegerField(default=0, blank=False, null=False)
+    # Number of total attempts using flashcard
+    attempted = models.PositiveSmallIntegerField(default=0, blank=False, null=False)
+    # Cumulative time spent on flashcard
+    time = models.TimeField() # TODO: set defaults
+    # last attempt datetime
+    lastAttempt = models.DateTimeField() # TODO: set defaults
+
+    # Enumerated Course
+    question = models.CharField(max_length=1024, unique=True)
+    # Flashcard short answer
+    answer = models.CharField(max_length=64)
+    # Referential Module - gets Course Candidate key from module attributes
+    module = models.ForeignKey(Module, on_delete=models.CASCADE)
+    # Approval - is approved?
+    approved = models.BooleanField(default=False)
