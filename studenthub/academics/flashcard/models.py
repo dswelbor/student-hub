@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 
 from django.db import models
+from django.utils import timezone
 from config.settings import AUTH_USER_MODEL
 
 # TODO: revisit the _str implementation for various models
@@ -88,7 +89,7 @@ class FlashcardStats(models.Model):
     Schema to model user-specific Flashcard-specific stats
     """
     # User using Flashcard
-    user = models.ForeignKey(AUTH_USER_MODEL)
+    user = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE)
     # Flashcard used by User
     flashcard = models.ForeignKey(Flashcard, on_delete=models.CASCADE)
     # Number of correct attempts using flashcard
@@ -98,7 +99,7 @@ class FlashcardStats(models.Model):
     # Cumulative time spent on flashcard
     elapsed = models.DurationField(default=timedelta())
     # last attempt datetime
-    last_attempt = models.DateTimeField(default=datetime.now())
+    last_attempt = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.flashcard
