@@ -1,0 +1,73 @@
+{% extends 'hub/base.html' %}
+<!-- TODO: Implement flashcard version -->
+{% block title %}
+    StudentHub || Trivia
+{% endblock %}
+
+{% block content %}
+<h1 align="center">Flashcards!</h1>
+<form method="post" action="play"> {% csrf_token %}
+    <div id="trivia-options" align="center">
+    <select name="subject-questions" size="1" id="sub-select"></select>
+    <select name="course-questions" size="1" id="course-select"></select>
+    <select name="module-questions" size="1" id="mod-select"></select>
+    <select name="qty-questions" size="1" id="qty-select"></select>
+    <br>
+    <input type="submit" value="Study Flashcards">
+    </div>
+</form>
+
+<br><br><br>
+{% endblock %}
+
+
+{% block script %}
+<script>
+    // Flashcard schema object
+    var flashcardScheme = {
+        subject: ['{{ SELECT }}'],
+        course: ['{{ SELECT }}'],
+        module: ['{{ SELECT }}'], // Prepend list with ANY_CATEGORY option
+        qty: [5, 10, 15]
+    };
+
+
+    // Iteratively populate subjects
+    {% if subject_list %}
+        {% for subject in subject_list %}
+            flashcardScheme.subject.push('{{ subject }}');
+        {% endfor %}
+    {% endif %}
+
+    // Iteratively populate courses
+    {% if course_list %}
+        {% for course in course_list %}
+            flashcardScheme.course.push('{{ course }}');
+        {% endfor %}
+    {% endif %}
+
+    // Iteratively populate Modules
+    {% if module_list %}
+        {% for module in module_list %}
+            flashcardScheme.module.push('{{ module }}');
+        {% endfor %}
+    {% endif %}
+
+    /* Use function defined in hub/base.html */
+
+    // populate trivia question subject list
+    populateSelectElement('sub-select', flashcardScheme.subject);
+
+    // Populate course list
+    populateSelectElement('course-select', flashcardScheme.course);
+
+    // Populate module list
+    populateSelectElement('mod-select', flashcardScheme.module);
+
+    // Populate qty list
+    populateSelectElement('qty-select', flashcardScheme.qty);
+
+
+</script>
+
+{% endblock %}
