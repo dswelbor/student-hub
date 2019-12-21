@@ -1,3 +1,4 @@
+from django.core import serializers
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 
@@ -23,4 +24,45 @@ def index(request):
         'course_list': course_list,
         'module_list': module_list
     }
+    return HttpResponse(template.render(context, request))
+
+
+@ login_required
+def study(request):
+    """This view delivers random flashcards based on selection criteria"""
+    # html template for view
+    template = loader.get_template('flashcard/study.html')
+
+    try:
+        # flashcard params
+        subject = request.POST['subject-questions']
+        course = request.POST['course-questions']
+        module = request.POST['module-questions']
+        qty = int(request.POST['qty-questions'])
+
+    except KeyError:
+        # TODO: implement redirect
+        # redirect to flashcard/index with message
+        pass
+
+    # get random flashcards
+    flashcards = Flashcard.custom.get_flashcards(qty, subject=subject, course=course, module=module)
+
+    # TODO: Implement error message and redirect to category choice
+
+    # Error - no questions
+    error_msg = None
+    if not flashcards:
+        error_msg = 'No flashcards found. Please select different subject, course, and module options.'
+
+    # get list flashcards as json
+    flashcards_json = serializers.serialize('json', flashcards)
+
+    # Map variables for template to use
+    context = {
+        'qty': len(flashcards_json),  # Accommodate less question in pool than passed qty
+        'flashcards_json': flashcards_json,
+        'error': error_msg
+    }
+
     return HttpResponse(template.render(context, request))

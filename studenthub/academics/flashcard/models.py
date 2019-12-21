@@ -1,5 +1,7 @@
 from datetime import datetime, timedelta
 
+from .manage import FlashcardManager
+
 from django.db import models
 from django.utils import timezone
 from config.settings import AUTH_USER_MODEL
@@ -69,6 +71,9 @@ class Flashcard(models.Model):
 
     def __str__(self):
         return self.question
+
+    object = models.Manager()  # Default model manager
+    custom = FlashcardManager()  # Custom manager for custom querysets
 
 
 class FlashcardTag(models.Model):

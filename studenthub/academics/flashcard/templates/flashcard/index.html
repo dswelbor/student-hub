@@ -6,7 +6,7 @@
 
 {% block content %}
 <h1 align="center">Flashcards!</h1>
-<form method="post" action="play"> {% csrf_token %}
+<form method="post" action="study"> {% csrf_token %}
     <div id="trivia-options" align="center">
     <select name="subject-questions" size="1" id="sub-select"></select>
     <select name="course-questions" size="1" id="course-select"></select>
