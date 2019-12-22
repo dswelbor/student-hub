@@ -80,14 +80,18 @@
             // line break
             flashcardElement.appendChild(document.createElement("br"));
 
+            // Make div container for input and buttons
+            var userInput = document.createElement("div");
+            userInput.setAttribute("class", "flashcard-interaction");
+
             // Add Flashcard short answer
             var answerField = document.createElement("INPUT");
             answerField.setAttribute("type", "text");
             answerField.setAttribute("id", "selected-answer");
             answerField.setAttribute("name", "answer-0");
-            flashcardElement.appendChild(answerField);
+            userInput.appendChild(answerField);
             // line break
-            flashcardElement.appendChild(document.createElement("br"));
+            userInput.appendChild(document.createElement("br"));
 
             // Add 'check answer ' button
             var answerButton = document.createElement("BUTTON");
@@ -112,7 +116,7 @@
             };
             // Add 'check answer ' button
             var nextButton = document.createElement("BUTTON");
-            nextButton.innerHTML = "Next";
+            nextButton.innerHTML = "Next ->";
             // onclick - try to display next flashcard
             nextButton.onclick = function() {
                 // Still more flashcards
@@ -131,9 +135,9 @@
             };
 
             // Add buttons
-            flashcardElement.appendChild(answerButton);
-            flashcardElement.appendChild(nextButton);
-
+            userInput.appendChild(answerButton);
+            userInput.appendChild(nextButton);
+            flashcardElement.appendChild(userInput);
 
             // Add flashcard with elements to page
             // Insert question text after page text with passed id

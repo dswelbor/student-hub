@@ -1,0 +1,13 @@
+.flashcard {
+    display: flex;
+    flex-direction: column;
+    border-style: solid;
+    border-radius: 20px;
+    border-width: 5px;
+    height: 300px;
+    min-width: 150px;
+}
+
+.flashcard-interaction {
+    margin-top: auto;
+}
