@@ -2,12 +2,28 @@
     display: flex;
     flex-direction: column;
     border-style: solid;
+    border-color: darkslategrey;
     border-radius: 20px;
     border-width: 5px;
+    margin: 20px;
     height: 300px;
     min-width: 150px;
 }
 
+.flashcard-title {
+    font-weight: bold;
+    background-color: darkslategrey;
+    color: white;
+    text-align: center;
+    height: 40px;
+    margin-bottom: auto;
+}
+
 .flashcard-interaction {
     margin-top: auto;
+    margin-bottom: 10px;
+}
+
+#result-status {
+    min-height: 25px;
 }

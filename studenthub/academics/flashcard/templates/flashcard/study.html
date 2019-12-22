@@ -10,7 +10,7 @@
     <h1 align="center" id="heading1">Study Flashcards!</h1>
     <div id="result-status"></div>
 
-    <div id="question-block" style="width:30%">
+    <div id="flashcard-block" style="width:30%">
 
     </div>
     {% if error %}
@@ -54,7 +54,7 @@
          * @param index flashcard deck number
          */
         function dispFlashcard(index) {
-            var qBlockElement = document.getElementById('question-block');
+            var qBlockElement = document.getElementById('flashcard-block');
             // remove previous flashcard if any
             while (qBlockElement.firstChild) {
                 qBlockElement.removeChild(qBlockElement.firstChild);
@@ -68,8 +68,9 @@
 
             // Add flashcard title
             var titleElement = document.createElement("div");
-            titleElement.setAttribute("id", "question-title");
-            titleElement.setAttribute("style", 'font-weight: bold');
+            titleElement.setAttribute("id", "flashcard-title" + index);
+            titleElement.setAttribute("class", "flashcard-title");
+            //titleElement.setAttribute("style", 'font-weight: bold');
             titleElement.textContent = 'Flashcard #' + (index + 1);
             flashcardElement.appendChild(titleElement);
 
@@ -111,7 +112,6 @@
                     document.getElementById('result-status').textContent = 'Incorrect!'
 
                 }
-                // TODO: iterate to new card
 
             };
             // Add 'check answer ' button
@@ -124,6 +124,9 @@
                 console.log('length: ' + parsedFlashcards.length);
                 // display next flashcard
                 if (++index < parsedFlashcards.length) {
+                    // clear status
+                    document.getElementById('result-status').textContent = ' '
+                    // display flashcard
                     dispFlashcard(index)
 
                 }
