@@ -41,83 +41,105 @@
         var flashcardList = []; // declare list of questions
         var parsedFlashcards = []; // list of parsed objects containing questions
 
-        console.log("this is a test");
-        console.log({{ flashcards_json|safe }});
         {% if flashcards_json %}
             parsedFlashcards = JSON.parse('{{ flashcards_json|safe }}');
             console.log(parsedFlashcards);
         {% endif %}
-        console.log(parsedFlashcards[0]);
-        console.log(parsedFlashcards[0].fields.question);
 
-        /*
-        // Iteratively create list of Questions
-        for (var i = 0; i < parsedFlashcards.length; i++) {
-            // TODO: filter &quote; and similiar strings
-            var importedFlashcard = JSON.parse(parsedFlashcards[i]);
-            //var flashcard = {
+        // display flashcard
+        dispFlashcard(0);
 
-            //};
-            //    new TypedQuestion(parsedQuestions[i].question,
-            //    parsedQuestions[i].choices, parsedQuestions[i].question_type);
-            // Append TypedQuestion to list
-            flashcardList.push(importedFlashcard);
-        }
-        */
-
-        for (i = 0; i < flashcardQty; i++) {
-            // first iteration
-            if (i === 0) {
-                // Add Flashcard question
-                var flashcardElement = document.createElement("div");
-                flashcardElement.setAttribute("class", FLASHCARD_CLASS);
-                flashcardElement.setAttribute("id", QUESTION + 0);
-                flashcardElement.setAttribute("style", 'text-align:center');
-
-
-                var textContent = document.createTextNode(parsedFlashcards[0].fields.question);
-                flashcardElement.appendChild(textContent);
-
-                // line break
-                flashcardElement.appendChild(document.createElement("br"));
-
-                // Add Flashcard short answer
-                var answerField = document.createElement("INPUT");
-                answerField.setAttribute("type", "text");
-                answerField.setAttribute("id", "selected-answer");
-                answerField.setAttribute("name", "answer-0");
-                flashcardElement.appendChild(answerField);
-                // line break
-                flashcardElement.appendChild(document.createElement("br"));
-
-                // Add buttons
-                var answerButton = document.createElement("BUTTON");
-                answerButton.innerHTML = "Check";
-                answerButton.onclick = function() {
-                    var selectedAnswer = document.getElementById('selected-answer');
-                    console.log(parsedFlashcards);
-                    console.log(selectedAnswer.value);
-                    if (selectedAnswer.value == parsedFlashcards[0].fields.answer) {
-                        document.getElementById('result-status').textContent = 'Correct!'
-
-                    }
-                    else {
-                        document.getElementById('result-status').textContent = 'Incorrect!'
-
-                    }
-                    // TODO: iterate to new card
-
-                };
-                flashcardElement.appendChild(answerButton);
-
-
-                // Add flashcard with elements to page
-                // Insert question text after page text with passed id
-                var pageElement = document.getElementById('question-block');
-                pageElement.appendChild(flashcardElement);
+        /**
+         * This function displays a flashcard in the question block of the page.
+         * @param index flashcard deck number
+         */
+        function dispFlashcard(index) {
+            var qBlockElement = document.getElementById('question-block');
+            // remove previous flashcard if any
+            while (qBlockElement.firstChild) {
+                qBlockElement.removeChild(qBlockElement.firstChild);
             }
 
+            // Add Flashcard question
+            var flashcardElement = document.createElement("div");
+            flashcardElement.setAttribute("class", FLASHCARD_CLASS);
+            flashcardElement.setAttribute("id", QUESTION + index);
+            flashcardElement.setAttribute("style", 'text-align:center');
+
+            // Add flashcard title
+            var titleElement = document.createElement("div");
+            titleElement.setAttribute("id", "question-title");
+            titleElement.setAttribute("style", 'font-weight: bold');
+            titleElement.textContent = 'Flashcard #' + (index + 1);
+            flashcardElement.appendChild(titleElement);
+
+            // Add Flashcard prompt text
+            var textContent = document.createTextNode(parsedFlashcards[index].fields.question);
+            flashcardElement.appendChild(textContent);
+
+            // line break
+            flashcardElement.appendChild(document.createElement("br"));
+
+            // Add Flashcard short answer
+            var answerField = document.createElement("INPUT");
+            answerField.setAttribute("type", "text");
+            answerField.setAttribute("id", "selected-answer");
+            answerField.setAttribute("name", "answer-0");
+            flashcardElement.appendChild(answerField);
+            // line break
+            flashcardElement.appendChild(document.createElement("br"));
+
+            // Add 'check answer ' button
+            var answerButton = document.createElement("BUTTON");
+            answerButton.innerHTML = "Check";
+            // onclick - evaluate entered answer
+            answerButton.onclick = function() {
+                var selectedAnswer = document.getElementById('selected-answer');
+                console.log(parsedFlashcards);
+                console.log(selectedAnswer.value);
+                // Correct
+                if (selectedAnswer.value == parsedFlashcards[index].fields.answer) {
+                    document.getElementById('result-status').textContent = 'Correct!'
+
+                }
+                // incorrect
+                else {
+                    document.getElementById('result-status').textContent = 'Incorrect!'
+
+                }
+                // TODO: iterate to new card
+
+            };
+            // Add 'check answer ' button
+            var nextButton = document.createElement("BUTTON");
+            nextButton.innerHTML = "Next";
+            // onclick - try to display next flashcard
+            nextButton.onclick = function() {
+                // Still more flashcards
+                console.log('next index' + (index + 1));
+                console.log('length: ' + parsedFlashcards.length);
+                // display next flashcard
+                if (++index < parsedFlashcards.length) {
+                    dispFlashcard(index)
+
+                }
+                // no more flashcards
+                else {
+                    document.getElementById('result-status').textContent = 'No More Flashcards!';
+                    --index; // decrement index
+                }
+            };
+
+            // Add buttons
+            flashcardElement.appendChild(answerButton);
+            flashcardElement.appendChild(nextButton);
+
+
+            // Add flashcard with elements to page
+            // Insert question text after page text with passed id
+            qBlockElement.appendChild(flashcardElement);
         }
+
 
 </script>
 
