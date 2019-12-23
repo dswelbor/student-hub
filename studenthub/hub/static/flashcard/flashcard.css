@@ -1,3 +1,7 @@
+button {
+    margin: 10px
+}
+
 .flashcard {
     display: flex;
     flex-direction: column;
@@ -21,7 +25,7 @@
 
 .flashcard-interaction {
     margin-top: auto;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 }
 
 #result-status {

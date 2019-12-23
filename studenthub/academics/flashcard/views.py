@@ -48,19 +48,26 @@ def study(request):
     # get random flashcards
     flashcards = Flashcard.custom.get_flashcards(qty, subject=subject, course=course, module=module)
 
-    # TODO: Implement error message and redirect to category choice
-
     # Error - no questions
     error_msg = None
-    if not flashcards:
+    try:
+        qty = len(flashcards)
+    except TypeError:
+        # TODO: Implement error message and redirect to category choice
         error_msg = 'No flashcards found. Please select different subject, course, and module options.'
+        qty = 0
 
     # get list flashcards as json
     flashcards_json = serializers.serialize('json', flashcards)
 
     # Map variables for template to use
     context = {
-        'qty': len(flashcards_json),  # Accommodate less question in pool than passed qty
+        # pass flashcard params
+        'subject': request.POST['subject-questions'],
+        'course': request.POST['course-questions'],
+        'module': request.POST['module-questions'],
+
+        'qty': qty,  # Accommodate less question in pool than passed qty
         'flashcards_json': flashcards_json,
         'error': error_msg
     }
