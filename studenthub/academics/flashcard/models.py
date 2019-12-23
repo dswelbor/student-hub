@@ -89,7 +89,7 @@ class FlashcardTag(models.Model):
         return self.tag
 
 
-class FlashcardStats(models.Model):
+class FlashcardStat(models.Model):
     """
     Schema to model user-specific Flashcard-specific stats
     """

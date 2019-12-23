@@ -3,8 +3,10 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 
 
-from .models import Subject, Course, Module, FlashcardTag, Flashcard, FlashcardStats
+from .models import Subject, Course, Module, FlashcardTag, Flashcard, FlashcardStat
 from django.contrib.auth.decorators import login_required  # Require users to be logged in to access page
+
+SELECT = '--Select--'
 
 
 @login_required
@@ -45,6 +47,15 @@ def study(request):
         # redirect to flashcard/index with message
         pass
 
+    # handle select text
+    if subject == SELECT:
+        subject = None
+
+    if course == SELECT:
+        course = None
+
+    if module == SELECT:
+        module = None
     # get random flashcards
     flashcards = Flashcard.custom.get_flashcards(qty, subject=subject, course=course, module=module)
 
