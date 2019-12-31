@@ -31,7 +31,9 @@
         qty: [5, 10, 15]
     };
 
-    var flashcardClassification = { }; // dictionary for flashcard classifications - root
+
+    /* Populate flashcard classifications */
+    var flashcardCat = { }; // dictionary for flashcard classifications - root
 
     // Iteratively populate subjects
     // level 1 subject sub-trees
@@ -39,7 +41,7 @@
         {% for subject in subject_list %}
             flashcardScheme.subject.push('{{ subject }}');
             // initialize sub-dictionaries for each subject
-            flashcardClassification['{{ subject }}'] = {};
+            flashcardCat['{{ subject }}'] = {};
         {% endfor %}
     {% endif %}
 
@@ -49,7 +51,7 @@
         {% for course in course_list %}
             flashcardScheme.course.push('{{ course }}');
             // associate course with "parent" subject
-            flashcardClassification['{{ course.subject }}']['{{ course }}'] = [];
+            flashcardCat['{{ course.subject }}']['{{ course }}'] = [];
         {% endfor %}
     {% endif %}
 
@@ -59,30 +61,87 @@
         {% for module in module_list %}
             flashcardScheme.module.push('{{ module }}');
             // associate module with "parent" course and subject
-            for (var subject in flashcardClassification) {
-                if (flashcardClassification[subject].hasOwnProperty('{{ module.course }}')) {
-                    flashcardClassification[subject]['{{ module.course }}'].push('{{ module }}')
+            for (var subject in flashcardCat) {
+                // course is a required field - remove this conditional?
+                if (flashcardCat[subject].hasOwnProperty('{{ module.course }}')) {
+                    flashcardCat[subject]['{{ module.course }}'].push('{{ module }}')
+                }
+                // unreachable block - course is a required field of module
+                else {
+                    // TODO: Implement this?
                 }
             }
         {% endfor %}
     {% endif %}
 
-    /* Use function defined in hub/base.html */
-
-    // populate trivia question subject list
+    // Populate subject, course, and module dropdowns
     populateSelectElement('sub-select', flashcardScheme.subject);
-
-    // Populate course list
     populateSelectElement('course-select', flashcardScheme.course);
-
-    // Populate module list
     populateSelectElement('mod-select', flashcardScheme.module);
-
     // Populate qty list
     populateSelectElement('qty-select', flashcardScheme.qty);
 
-    console.log(flashcardClassification);
 
+
+    console.log(flashcardCat); // verify classifications in dictionary-based n-ary tree
+
+
+    var testCounter = 0; // TODO: remove - debug
+    // Update valid course and modules on subject selection
+
+    // get refs to drop downs
+    var subjectDropdown = document.getElementById('sub-select');
+    var courseDropdown = document.getElementById('course-select');
+    var moduleDropdown = document.getElementById('mod-select');
+    console.log(subjectDropdown.options[subjectDropdown.selectedIndex].value); // debug what it's comparing
+    console.log('{{ SELECT }}');
+    console.log(subjectDropdown.options[subjectDropdown.selectedIndex].value == '{{ SELECT }}');
+    // user selects a different "subject" option
+    subjectDropdown.onchange = function() {
+        console.log("Subject changed!" + testCounter++); // TODO: remove - debug
+        // remove previous options
+        clearDropDown(courseDropdown);
+        clearDropDown(moduleDropdown);
+
+        // Filter - All subjects and their children classifications
+        if (subjectDropdown.options[subjectDropdown.selectedIndex].value == '{{ SELECT }}') {
+            // populate all 2 "sub" menus with default values
+            populateSelectElement('course-select', flashcardScheme.course);
+            populateSelectElement('mod-select', flashcardScheme.module);
+
+            console.log('default selection');
+        }
+        // Filter - One subject and its children classifications
+        else {
+            let subject = subjectDropdown.options[subjectDropdown.selectedIndex].value;
+            // populate course drop down
+            let courseList = Object.keys(flashcardCat[subject]);
+            populateSelectElement('course-select', courseList);
+
+            // iteratively collect all modules "in" selected subset
+            let moduleList = [];
+            courseList.forEach(function (courseKey) {
+                 // iterate through all modules
+                flashcardCat[subject][courseKey].forEach(function(moduleLeaf) {
+                    moduleList.push(moduleLeaf)
+                });
+            });
+            // populate module drop down
+            populateSelectElement('mod-select', moduleList);
+        }
+
+    };
+
+    /**
+     * Helper function to clear a drop down menu
+     * @param dropDown dom select menu to clear
+     */
+    function clearDropDown(dropDown) {
+        // remove previous flashcard if any
+        while (dropDown.firstChild) {
+            dropDown.removeChild(dropDown.firstChild);
+        }
+    }
 
 </script>
 
