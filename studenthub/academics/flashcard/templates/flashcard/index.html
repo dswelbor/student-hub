@@ -3,6 +3,7 @@
 {% block title %}
     StudentHub || Trivia
 {% endblock %}
+{% load static %}
 
 {% block content %}
 <h1 align="center">Flashcards!</h1>
@@ -22,7 +23,10 @@
 
 
 {% block script %}
+<script src="{% static "flashcard/select.js" %}"></script>
 <script>
+
+    const SELECT_TEXT = '{{ SELECT }}';
     // Flashcard schema object
     var flashcardScheme = {
         subject: ['{{ SELECT }}'],
@@ -82,131 +86,21 @@
     populateSelectElement('qty-select', flashcardScheme.qty);
 
 
-
-    console.log(flashcardCat); // verify classifications in dictionary-based n-ary tree
-
-
-    var testCounter = 0; // TODO: remove - debug
     // Update valid course and modules on subject selection
 
     // get refs to drop downs
     var subjectDropdown = document.getElementById('sub-select');
     var courseDropdown = document.getElementById('course-select');
     var moduleDropdown = document.getElementById('mod-select');
-    console.log(subjectDropdown.options[subjectDropdown.selectedIndex].value); // debug what it's comparing
-    console.log('{{ SELECT }}');
-    console.log(subjectDropdown.options[subjectDropdown.selectedIndex].value == '{{ SELECT }}');
     // user selects a different "subject" option
-    // TODO: refactor onchange function implementation out of main script - readability
     subjectDropdown.onchange = function() {
-        console.log("Subject changed!" + testCounter++); // TODO: remove - debug
-        // remove invalid options
-        clearDropDown(courseDropdown);
-        clearDropDown(moduleDropdown);
-
-        var subject = subjectDropdown.options[subjectDropdown.selectedIndex].value;
-        // Filter - All subjects and their children classifications
-        if (subject == '{{ SELECT }}') {
-            // populate all 2 "sub" menus with default values
-            populateSelectElement('course-select', flashcardScheme.course);
-            populateSelectElement('mod-select', flashcardScheme.module);
-
-            console.log('default selection');
-        }
-        // Filter - One subject and its children classifications
-        else {
-            // populate course drop down
-            let courseList = Object.keys(flashcardCat[subject]);
-            courseList.unshift('{{ SELECT }}');
-            populateSelectElement('course-select', courseList);
-
-            // iteratively collect all modules "in" selected subset
-            let moduleList = ['{{ SELECT }}'];
-            courseList.shift(); // consume 'SELECT' element
-            courseList.forEach(function(courseKey) {
-                // iterate through all modules
-                flashcardCat[subject][courseKey].forEach(function(moduleLeaf) {
-                    moduleList.push(moduleLeaf)
-                });
-            });
-            // populate module drop down
-            populateSelectElement('mod-select', moduleList);
-        }
+        updateCoursesModules();
     };
 
     // User selects a different "course" option
     courseDropdown.onchange = function() {
-        console.log('course changed ');
-        // remove invalid options
-        clearDropDown(moduleDropdown);
-
-        let subject = subjectDropdown.options[subjectDropdown.selectedIndex].value;
-        let course = courseDropdown.options[courseDropdown.selectedIndex].value;
-
-        // populate subject list
-        let subjectList = [];
-        // Filter - all subject
-        if (subject == '{{ SELECT }}') {
-            subjectList = Object.keys(flashcardCat);
-        }
-        // Filter - singleton subject
-        else {
-            subjectList.push(subject)
-        }
-
-        // populate course list
-        let courseList = [];
-
-        // Filter - All courses and their module "children"
-        if (course == '{{ SELECT }}') {
-            // populate course list
-            subjectList.forEach(function(subjectKey) {
-                let courses = Object.keys(flashcardCat[subjectKey]);
-                console.log(courses);
-                // courseList.concat(Object.keys(flashcardCat[subjectKey]));
-                courseList = courseList.concat(courses);
-            });
-            console.log(courseList)
-        }
-        // Filter - one course and it's children modules
-        else {
-            // populate singleton course
-            courseList.push(course);
-        }
-
-        // populate module drop down
-        // iteratively collect all modules "in" selected subset
-        let moduleList = ['{{ SELECT }}'];
-        subjectList.forEach(function(subjectKey) {
-            courseList.forEach(function(courseKey) {
-                // iterate through all modules
-                console.log(courseKey);
-                // course "in" subject superset
-                console.log(Object.keys(flashcardCat[subjectKey]));
-                console.log(Object.keys(flashcardCat[subjectKey]).includes(courseKey));
-                if (Object.keys(flashcardCat[subjectKey]).includes(courseKey)) {
-                    flashcardCat[subjectKey][courseKey].forEach(function (moduleLeaf) {
-                        moduleList.push(moduleLeaf)
-                    });
-                }
-            });
-        });
-        // populate module drop down
-        populateSelectElement('mod-select', moduleList);
+        updateModules();
     };
-
-
-
-    /**
-     * Helper function to clear a drop down menu
-     * @param dropDown dom select menu to clear
-     */
-    function clearDropDown(dropDown) {
-        // remove previous flashcard if any
-        while (dropDown.firstChild) {
-            dropDown.removeChild(dropDown.firstChild);
-        }
-    }
 
 </script>
 
