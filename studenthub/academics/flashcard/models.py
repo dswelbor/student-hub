@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 
-from .manage import FlashcardManager
+from academics.flashcard.manage import FlashcardManager
 
 from django.db import models
 from django.utils import timezone
@@ -72,7 +72,7 @@ class Flashcard(models.Model):
     def __str__(self):
         return self.question
 
-    object = models.Manager()  # Default model manager
+    objects = models.Manager()  # Default model manager
     custom = FlashcardManager()  # Custom manager for custom querysets
 
 
