@@ -3,12 +3,16 @@ python:
 - "3.7"
 # setup environment
 env:
-- DJANGO_SETTINGS_MODULE='studenthub.config.settings'
+- DJANGO=2.2.3
 # install dependencies
 
 # db for django tests
 services:
   - postgresql
+
+before_install:
+  - export DJANGO_SETTINGS_MODULE=studenthub.config.settings
+  - export PYTHONPATH=$HOME/builds/dswelbor/student-hub
 
 install:
 - pip install -r requirements.txt
