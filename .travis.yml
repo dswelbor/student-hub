@@ -10,7 +10,7 @@ install:
 
 before_script: |
   psql -c "CREATE DATABASE studenthub;" -U postgres
-  ech "{
+  echo "{
          "SECRET_KEY":  "+ca%$k%#cjn%opdsp5jdt3^i3=t5hy^tn6^#q_7zoymvie7h_l",
          "DEBUG": false,
 
