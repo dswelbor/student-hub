@@ -1,7 +1,7 @@
 language: python
 
 python:
-  - 3.7
+  - "3.7"
 
 services:
   - postgresql
@@ -30,5 +30,5 @@ before_script:
   - }" > studenthub/config/settings.py
 
 script:
-  - python manage.py migrate
-  - python manage.py test
+  - python studenthub/manage.py migrate
+  - python studenthub/manage.py test
