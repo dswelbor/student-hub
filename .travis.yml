@@ -6,11 +6,8 @@ python:
 services:
   - postgresql
 
-env:
-  - DJANGO=2.2.3
-
 before_install:
-  - export DJANGO_SETTINGS_MODULE=studenthub.config.settings
+  - export DJANGO_SETTINGS_MODULE='studenthub.config.settings'
   - export PIP_USE_MIRRORS=true
 
 install:
