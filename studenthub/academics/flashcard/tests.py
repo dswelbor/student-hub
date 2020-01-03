@@ -3,6 +3,7 @@ from academics.flashcard.models import Course, Flashcard, Module, Subject
 
 
 class FlashcardTestCase(TestCase):
+    """Test suite for flashcard app"""
     MATH_SUBJECT = 'MATH-TEST'
     ENG_SUBJECT = 'ENGINEERING-TEST'
 
@@ -81,6 +82,7 @@ class FlashcardTestCase(TestCase):
         self.assertEqual(testdef.approved, False)
 
     def test_custom_get_flashcards(self):
+        """Verifies get_flashcards custom queryset works as intended"""
         math = Subject.objects.get(subject=self.MATH_SUBJECT)
         eng = Subject.objects.get(subject=self.ENG_SUBJECT)
         math_flashcards = Flashcard.custom.get_flashcards(10, subject=math)
@@ -108,6 +110,3 @@ class FlashcardTestCase(TestCase):
         # expect each card to be a matt266-mod1 card
         for card in mat266_mod1_flashcards:
             self.assertEqual(card.module.module, 'mat266-mod1')
-
-
-
