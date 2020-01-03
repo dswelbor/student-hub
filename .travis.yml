@@ -33,4 +33,4 @@ before_script: |
 
 # run test scripts
 script:
-- python manage.py test
+- python studenthub/manage.py test
