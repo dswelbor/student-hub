@@ -17,11 +17,12 @@ before_script: |
          "DATABASE_ENGINE": "django.db.backends.postgresql_psycopg2",
          "DATABASE_NAME": "studenthub",
          "DATABASE_HOST": "localhost",
-         "DATABASE_PORT":  "5432",
+         "DATABASE_PORT":  "",
          "USERNAME": "postgres",
          "PASSWORD": ""
        }" > studenthub/config/settings.json
+  cd studenthub
 
 # run test scripts
 script:
-- python studenthub/manage.py test
+- python manage.py test
