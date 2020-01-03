@@ -5,9 +5,15 @@ python:
 env:
 - DJANGO_SETTINGS_MODULE='studenthub.config.settings'
 # install dependencies
+
+# db for django tests
+services:
+  - postgresql
+
 install:
 - pip install -r requirements.txt
 
+# create db and settings json file
 before_script: |
   psql -c "CREATE DATABASE studenthub;" -U postgres
   echo "{
