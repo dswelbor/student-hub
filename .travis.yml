@@ -12,7 +12,6 @@ services:
 
 before_install:
   - export DJANGO_SETTINGS_MODULE=studenthub.config.settings
-  - export PYTHONPATH=$HOME/builds/dswelbor/student-hub/studenthub
 
 install:
 - pip install -r requirements.txt
@@ -31,7 +30,6 @@ before_script: |
          "USERNAME": "postgres",
          "PASSWORD": ""
        }" > studenthub/config/settings.json
-  cd studenthub
 
 # run test scripts
 script:
