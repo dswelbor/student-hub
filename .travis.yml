@@ -12,7 +12,7 @@ services:
 
 before_install:
   - export DJANGO_SETTINGS_MODULE=studenthub.config.settings
-  - export PYTHONPATH=$HOME/builds/dswelbor/student-hub
+  - export PYTHONPATH=$HOME/builds/dswelbor/student-hub/studenthub
 
 install:
 - pip install -r requirements.txt
