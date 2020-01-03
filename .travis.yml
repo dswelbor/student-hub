@@ -1,31 +1,14 @@
 language: python
-
 python:
-  - "3.7"
-
-services:
-  - postgresql
-
-before_install:
-  - export DJANGO_SETTINGS_MODULE='studenthub.config.settings'
-  - export PIP_USE_MIRRORS=true
-
+- "3.7"
+# setup environment
+env:
+- DJANGO_VERSION=2.2.3
+- DJANGO_SETTINGS_MODULE='studenthub.config.settings'
+# install dependencies
 install:
-  - pip install -r requirements.txt
+- pip install -r requirements.txt
 
-before_script:
-  - psql -c "CREATE DATABASE studenthub;" -U postgres
-  - echo "{
-  - "SECRET_KEY":  "+ca%$k%#cjn%opdsp5jdt3^i3=t5hy^tn6^#q_7zoymvie7h_l",
-  - "DEBUG": false,
-  - "DATABASE_ENGINE": "django.db.backends.postgresql_psycopg2",
-  - "DATABASE_NAME": "studenthub",
-  - "DATABASE_HOST": "localhost",
-  - "DATABASE_PORT":  "5432",
-  - "USERNAME": "postgres",
-  - "PASSWORD": ""
-  - }" > studenthub/config/settings.py
-
+# run test scripts
 script:
-  - python studenthub/manage.py migrate
-  - python studenthub/manage.py test
+- python studenthub/manage.py test
