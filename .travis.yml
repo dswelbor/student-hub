@@ -18,6 +18,17 @@ install:
 
 before_script:
   - psql -c "CREATE DATABASE studenthub;" -U postgres
+  - echo "{
+    "SECRET_KEY":  "+ca%$k%#cjn%opdsp5jdt3^i3=t5hy^tn6^#q_7zoymvie7h_l",
+    "DEBUG": false,
+
+    "DATABASE_ENGINE": "django.db.backends.postgresql_psycopg2",
+    "DATABASE_NAME": "studenthub",
+    "DATABASE_HOST": "localhost",
+    "DATABASE_PORT":  "5432",
+    "USERNAME": "postgres",
+    "PASSWORD": ""
+    }" > config/settings.py
 
 script:
   - python manage.py migrate
