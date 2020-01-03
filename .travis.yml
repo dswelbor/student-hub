@@ -10,8 +10,8 @@ env:
 services:
   - postgresql
 
-before_install:
-  - export DJANGO_SETTINGS_MODULE=studenthub.config.settings
+# before_install:
+#   - export DJANGO_SETTINGS_MODULE=studenthub.config.settings
 
 install:
 - pip install -r requirements.txt
