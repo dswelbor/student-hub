@@ -22,6 +22,7 @@ urlpatterns = [
     # path('accounts/login/', views.LoginView.as_view(), name='login'),  # login
     path('accounts/', include('django.contrib.auth.urls')),  # login/logout
     path('', include('hub.urls')),  # StudentHub home
-    path('games/', include('games.urls'))  # Games
+    path('games/', include('games.urls')),  # Games
+    path('academics/', include('academics.urls'))  # Games
 
 ]

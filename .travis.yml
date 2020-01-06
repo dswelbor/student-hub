@@ -1,0 +1,35 @@
+language: python
+python:
+- "3.7"
+# setup environment
+env:
+- DJANGO=2.2.3
+# install dependencies
+
+# db for django tests
+services:
+  - postgresql
+
+# before_install:
+#   - export DJANGO_SETTINGS_MODULE=studenthub.config.settings
+
+install:
+- pip install -r requirements.txt
+
+# create db and settings json file
+before_script: |
+  psql -c "CREATE DATABASE studenthub;" -U postgres
+  echo "{
+         \"SECRET_KEY\":  \"+ca%$k%#cjn%opdsp5jdt3^i3=t5hy^tn6^#q_7zoymvie7h_l\",
+         \"DEBUG\": false,
+         \"DATABASE_ENGINE\": \"django.db.backends.postgresql_psycopg2\",
+         \"DATABASE_NAME\": \"studenthub\",
+         \"DATABASE_HOST\": \"localhost\",
+         \"DATABASE_PORT\":  \"\",
+         \"USERNAME\": \"postgres\",
+         \"PASSWORD\": \"\"
+       }" > studenthub/config/settings.json
+
+# run test scripts
+script:
+- python studenthub/manage.py test

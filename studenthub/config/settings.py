@@ -65,7 +65,9 @@ INSTALLED_APPS = [
     'hub.apps',  # StudentHub home
     'users.apps.UsersConfig',  # custom user model
     # Games
-    'games.trivia.apps.TriviaConfig'
+    'games.trivia.apps.TriviaConfig',
+    # Academics
+    'academics.flashcard.apps.FlashcardConfig'
 ]
 
 MIDDLEWARE = [

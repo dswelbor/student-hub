@@ -8,6 +8,7 @@
         {% block title %}
         {% endblock %}
     </title>
+    <link rel="stylesheet" href="{% static "flashcard/flashcard.css" %}">
 </head>
 <body>
 
@@ -25,6 +26,7 @@
         <div align="center">
             <a href="{% url 'index' %}">Home</a>
             <a href="{% url 'trivia' %}">Trivia</a>
+            <a href="{% url 'flashcard' %}">Flashcard</a>
         </div>
         <hr>
     </nav>
