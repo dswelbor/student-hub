@@ -1,0 +1,107 @@
+{% extends 'hub/base.html' %}
+<!-- TODO: Implement flashcard version -->
+{% block title %}
+    StudentHub || Trivia
+{% endblock %}
+{% load static %}
+
+{% block content %}
+<h1 align="center">Flashcards!</h1>
+<form method="post" action="study"> {% csrf_token %}
+    <div id="trivia-options" align="center">
+    <select name="subject-questions" size="1" id="sub-select"></select>
+    <select name="course-questions" size="1" id="course-select"></select>
+    <select name="module-questions" size="1" id="mod-select"></select>
+    <select name="qty-questions" size="1" id="qty-select"></select>
+    <br>
+    <input type="submit" value="Study Flashcards">
+    </div>
+</form>
+
+<br><br><br>
+{% endblock %}
+
+
+{% block script %}
+<script src="{% static "flashcard/select.js" %}"></script>
+<script>
+
+    const SELECT_TEXT = '{{ SELECT }}';
+    // Flashcard schema object
+    var flashcardScheme = {
+        subject: ['{{ SELECT }}'],
+        course: ['{{ SELECT }}'],
+        module: ['{{ SELECT }}'], // Prepend list with ANY_CATEGORY option
+        qty: [5, 10, 15]
+    };
+
+
+    /* Populate flashcard classifications */
+    var flashcardCat = { }; // dictionary for flashcard classifications - root
+
+    // Iteratively populate subjects
+    // level 1 subject sub-trees
+    {% if subject_list %}
+        {% for subject in subject_list %}
+            flashcardScheme.subject.push('{{ subject }}');
+            // initialize sub-dictionaries for each subject
+            flashcardCat['{{ subject }}'] = {};
+        {% endfor %}
+    {% endif %}
+
+    // Iteratively populate courses
+    // level 2 course sub-trees
+    {% if course_list %}
+        {% for course in course_list %}
+            flashcardScheme.course.push('{{ course }}');
+            // associate course with "parent" subject
+            flashcardCat['{{ course.subject }}']['{{ course }}'] = [];
+        {% endfor %}
+    {% endif %}
+
+    // Iteratively populate Modules
+    // level 3 leaves
+    {% if module_list %}
+        {% for module in module_list %}
+            flashcardScheme.module.push('{{ module }}');
+            // associate module with "parent" course and subject
+            for (var subject in flashcardCat) {
+                // course is a required field - remove this conditional?
+                if (flashcardCat[subject].hasOwnProperty('{{ module.course }}')) {
+                    flashcardCat[subject]['{{ module.course }}'].push('{{ module }}')
+                }
+                // unreachable block - course is a required field of module
+                else {
+                    // TODO: Implement this?
+                }
+            }
+        {% endfor %}
+    {% endif %}
+
+    // Populate subject, course, and module dropdowns
+    populateSelectElement('sub-select', flashcardScheme.subject);
+    populateSelectElement('course-select', flashcardScheme.course);
+    populateSelectElement('mod-select', flashcardScheme.module);
+    // Populate qty list
+    populateSelectElement('qty-select', flashcardScheme.qty);
+
+
+    // Update valid course and modules on subject selection
+
+    // get refs to drop downs
+    var subjectDropdown = document.getElementById('sub-select');
+    var courseDropdown = document.getElementById('course-select');
+    var moduleDropdown = document.getElementById('mod-select');
+    // user selects a different "subject" option
+    subjectDropdown.onchange = function() {
+        updateCoursesModules();
+    };
+
+    // User selects a different "course" option
+    courseDropdown.onchange = function() {
+        updateModules();
+    };
+
+</script>
+
+{% endblock %}

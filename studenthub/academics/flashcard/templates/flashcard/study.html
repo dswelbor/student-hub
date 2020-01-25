@@ -1,0 +1,168 @@
+{% extends 'hub/base.html' %}
+{% load static %}
+
+{% block title %}
+    StudentHub || Trivia
+{% endblock %}
+
+
+{% block content %}
+    <h1 align="center" id="heading1">Study Flashcards!</h1>
+    <div id="result-status"></div>
+
+    <div id="flashcard-block" style="width:30%">
+
+    </div>
+    {% if error %}
+        <p>{{ error }}</p>
+    {% endif %}
+
+    <form method="post" action="study" > {% csrf_token %}
+        {% if subject %}
+            <input type="hidden" name="subject-questions" value="{{ subject }}">
+        {% endif %}
+        {% if course %}
+            <input type="hidden" name="course-questions" value="{{ course }}">
+        {% endif %}
+        {% if module %}
+            <input type="hidden" name="module-questions" value="{{ module }}">
+        {% endif %}
+        {% if qty %}
+            <input type="hidden" name="qty-questions" value="{{ qty }}">
+        {% endif %}
+        <input type="submit" value="Study More" id="submit-button">
+    </form>
+    <hr>
+
+{% endblock %}
+
+{% block script %}
+
+
+
+    <!-- <script src="{% static "flashcards/study.js" %}"></script> -->
+    <script>
+        const FLASHCARD_QTY = 'qty'; // name for hidden field with question count qty
+        const FLASHCARD_CLASS = 'flashcard'; // class assigned to each Question div
+        const QUESTION = 'question';
+        // import data from view context
+        {% if qty %}
+            var flashcardQty = {{ qty }};
+            console.log(flashcardQty);
+        {% endif %}
+
+        var flashcardList = []; // declare list of questions
+        var parsedFlashcards = []; // list of parsed objects containing questions
+
+        {% if flashcards_json %}
+            parsedFlashcards = JSON.parse('{{ flashcards_json|safe }}');
+            console.log(parsedFlashcards);
+        {% endif %}
+
+        // display flashcard
+        dispFlashcard(0);
+
+        /**
+         * This function displays a flashcard in the question block of the page.
+         * @param index flashcard deck number
+         */
+        function dispFlashcard(index) {
+            var qBlockElement = document.getElementById('flashcard-block');
+            // remove previous flashcard if any
+            while (qBlockElement.firstChild) {
+                qBlockElement.removeChild(qBlockElement.firstChild);
+            }
+
+            // Add Flashcard question
+            var flashcardElement = document.createElement("div");
+            flashcardElement.setAttribute("class", FLASHCARD_CLASS);
+            flashcardElement.setAttribute("id", QUESTION + index);
+            flashcardElement.setAttribute("style", 'text-align:center');
+
+            // Add flashcard title
+            var titleElement = document.createElement("div");
+            titleElement.setAttribute("id", "flashcard-title" + index);
+            titleElement.setAttribute("class", "flashcard-title");
+            //titleElement.setAttribute("style", 'font-weight: bold');
+            titleElement.textContent = 'Flashcard #' + (index + 1);
+            flashcardElement.appendChild(titleElement);
+
+            // Add Flashcard prompt text
+            var textContent = document.createTextNode(parsedFlashcards[index].fields.question);
+            flashcardElement.appendChild(textContent);
+
+            // line break
+            flashcardElement.appendChild(document.createElement("br"));
+
+            // Make div container for input and buttons
+            var userInput = document.createElement("div");
+            userInput.setAttribute("class", "flashcard-interaction");
+
+            // Add Flashcard short answer input
+            var answerField = document.createElement("INPUT");
+            answerField.setAttribute("type", "text");
+            answerField.setAttribute("id", "selected-answer");
+            answerField.setAttribute("name", "answer-0");
+            userInput.appendChild(answerField);
+            // line break
+            userInput.appendChild(document.createElement("br"));
+            //userInput.appendChild(document.createElement("br"));
+
+            // Add 'check answer ' button
+            var answerButton = document.createElement("BUTTON");
+            answerButton.innerHTML = "Check";
+            // onclick - evaluate entered answer
+            answerButton.onclick = function() {
+                var selectedAnswer = document.getElementById('selected-answer');
+                console.log(parsedFlashcards);
+                console.log(selectedAnswer.value);
+                // Correct
+                if (selectedAnswer.value == parsedFlashcards[index].fields.answer) {
+                    document.getElementById('result-status').textContent = 'Correct!'
+
+                }
+                // incorrect
+                else {
+                    document.getElementById('result-status').textContent = 'Incorrect!'
+
+                }
+
+            };
+            // Add 'check answer ' button
+            var nextButton = document.createElement("BUTTON");
+            nextButton.innerHTML = "Next ->";
+            // onclick - try to display next flashcard
+            nextButton.onclick = function() {
+                // Still more flashcards
+                console.log('next index' + (index + 1));
+                console.log('length: ' + parsedFlashcards.length);
+                // display next flashcard
+                if (++index < parsedFlashcards.length) {
+                    // clear status
+                    document.getElementById('result-status').textContent = ' ';
+                    // display flashcard
+                    dispFlashcard(index)
+
+                }
+                // no more flashcards
+                else {
+                    document.getElementById('result-status').textContent = 'No More Flashcards!';
+                    --index; // decrement index
+                    // TODO: update results stats in studenthub
+                }
+            };
+
+            // Add buttons
+            userInput.appendChild(answerButton);
+            userInput.appendChild(nextButton);
+            flashcardElement.appendChild(userInput);
+
+            // Add flashcard with elements to page
+            // Insert question text after page text with passed id
+            qBlockElement.appendChild(flashcardElement);
+        }
+
+
+</script>
+
+{% endblock %}
