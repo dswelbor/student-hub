@@ -5,10 +5,13 @@ recreational tools.
 ## General requirements
 ### User Data and Privacy
 All users will have a “profile” with private and public data fields they can fill out at 
-their discretion – such as name, email address, and a nickname. A user can request 
+their discretion – such as name, email address, and other sensitive data. A user can request 
 copies of all data stored on the system associated with them. A user's private data 
 will be hidden from non-staff members by default – such as name, email address, and so 
-on. However, a user can opt-in to share this data with other users.
+on. However, a user can opt-in to share this data with other users. <BR>
+
+User data not considered sensitive include usernames, nicknames, and other data to be 
+determined.
 ### Passwords
 A user shall be able to manually reset their password with a new password that meets 
 complexity requirements.
