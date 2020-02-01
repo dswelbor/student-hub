@@ -38,8 +38,8 @@ An app to support learning by presenting digital flashcards for the purpose of s
 Generate a balanced multi-semester schedule based on anticipated course offerings, course difficulty, desired 
 difficulty, course pre-requisites, and other restrictions. <br>
 Requirements:
-- A staff admin shall be able to add new majors, courses, and course requirements.
-- A staff admin shall be able to modify or remove majors, courses, and course requirements.
+- A staff admin shall be able to add new majors, courses, and major course requirements.
+- A staff admin shall be able to modify or remove majors, courses, and major course  requirements.
 - A user shall be able to specify preferred schedule requirements and save those requirements for later use in schedule requests.
 - A user shall be able to select their major of choice and store it as part of their profile. (this is considered private information)
 - A user shall be able to self-report courses taken and performance in that course.

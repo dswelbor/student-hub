@@ -1,7 +1,0 @@
-Functional Requirements
--Schedule Classes
--Report completed class (student)
--Report class difficulty (student)
--Select Major(student)
--define major
-
